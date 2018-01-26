@@ -16,7 +16,7 @@ pp = pprint.PrettyPrinter(depth=6)
 #You could change the rebuild to boto3 optionset, for programmable changesets.
 
 for enviroment in (response['Environments']):
-	if (enviroment['EnvironmentName']).startswith('dev'):
+	if (enviroment['EnvironmentName']).startswith('ENVNAMESTRING'):
 		#pp.pprint(enviroment['EnvironmentName'])
 		env = (enviroment['EnvironmentName'])
 		rebuilding = client.rebuild_environment(
