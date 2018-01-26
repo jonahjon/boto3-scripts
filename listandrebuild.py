@@ -1,7 +1,7 @@
 import boto3
 import pprint
 
-#This script will list all beanstalk enviroments filtered by certain keywords 'dev', 'stage' 'qa', and you can programmatically
+#This script will list all beanstalk enviroments filtered by certain keywords, and you can programmatically
 #apply changes or rebuild in a fashion with a success/failure on each one. This is useful when updating cloudformation stacks
 #They often times will update but won't apply changes to beanstalk enviorments unless they are rebuilt. I built this
 #For a project when updating ELB cipher SSL protocols, they didn't automagically apply until each env was rebuilt.
