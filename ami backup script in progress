@@ -1,0 +1,75 @@
+import boto.ec2
+import datetime
+import time
+import sys
+from time import mktime
+import ami_back_config
+import logging
+
+logger = logging.getlogger('AMIBackup')
+hdlr = logging.FileHandler(ami_backup_config.logfile)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(loggin.INFO)
+signature = "_bkp"
+
+print "Backup Started\n"
+servers = ami_backup_config.servers
+backup_retention = ami.backup_config.backup_rentention
+
+for server in servers:
+    server_name = server['name']
+    account_profile = server['profile']
+    server_region = server['region']
+    server_pattern = server['pattern']
+
+ 	ec2 = boto.ec2.connect_to_region(server_region, profile_name = account_profile)
+ 	if (ec2 is None):
+ 		print "ERROR - " + server_name + ":unable to connect"
+ 		logger.error( server_name + ": unable to connect to region " + server_region + "with profile" + account_profile
+ 		continue
+
+ 	reservations = ec2.get_all_reservations(filters = {'tag:Name' :server_pattern,})
+ 	if (len(reservations)) == 0):
+ 		print "ERROR - " + server_name + ":unable to find server" + server_pattern
+ 		logger.error( server_name + ":unable to find server" + server_pattern)
+ 		continue
+ 	for reservation in reservations:
+ 		for instance in reservation.instances:
+ 			instance_name = instance.tags['Name']
+ 			instance_id = instance.instance_id
+ 			print "\n" = server_name + ":" + instance_name + " (" + instance_id + ")"
+ 			current_datetime = datetime.datetime.now()
+ 			data_stamp = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+ 			ami_name = instance_name + signature + date_stamp
+ 			try:
+ 				ami_id = instance.create_image(ami_name, description='Created by AMI Backup', no_reboot=True, dry_run=False)
+ 			except Exceptrion, e:
+ 				logger.error("Backup " + server_name + ": " e.message
+ 				continue
+ 			logger.info("Backup " + server_name + ": " )
+ 			print "AMI Creation Started"
+ 			print "AMI name: " + ami_name
+
+ 			#deregister old images
+ 			print "Deletion of old images in progress"
+ 			images = ec2.get_all_images(filters = {'tag:Name': server_pattern + signature + '*'})
+ 			for image in images:
+ 				image_name = image.tags
+ 				image_id = image.image_id
+ 				image_stamp = image_name.replace(server_pattern + signature, "")
+ 				image_timestamp = mktime(time.strptime(image_stamp, "%Y-%m-%d_%H-%M-%S"))
+ 				current_timestamp = mktime(current_datetime.timetuple())
+ 				diff_minutes = (current_timestamp - image_timestamp) / 60
+ 				if (diff_minutes > backup_rentention):
+ 					image.deregister(delete_snapshot=True, dry_run=False)
+ 				print image_name + " Deleted"
+ 				logger.info("Deleted AMI " + image_name)
+ 			else:
+ 				print image_name + "kept"
+ 				logger.info("Kept AMI " image_name)
+
+
+print "\n Backups completed"
+
