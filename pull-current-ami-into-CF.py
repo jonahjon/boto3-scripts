@@ -11,10 +11,7 @@ import datetime
 
 # Get a starting point by finding a value in the table on this page or similar page.
 # https://aws.amazon.com/amazon-linux-ami/
-#
-# Alternatively, you can run something like:
-# aws ec2 describe-images --owners amazon --filter "Name=description,Values=Amazon Linux AMI 2017*" |
-#   jq -c '.Images[] | {ImageId, Name, Description}'
+
 
 
 # This is "amzn-ami-hvm-2017.09.01
