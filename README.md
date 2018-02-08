@@ -1,7 +1,4 @@
-# boto3-script ssssssssss
+# boto3-script
 # Going to be putting in boto3 scripts for AWS as I make certain ones for functionality that I find helpful, and don't exist out on the interwebs
 
-
-Turkey
-and
-gravy
+Transtream Hostname: headache
