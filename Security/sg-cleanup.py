@@ -135,7 +135,7 @@ emailer = (email_stats + ('\n' * 3) + email_body)
 print (emailer)
 
 #Here is the Delete Function which will be run in the future
-'''
+
 for group in delete_candidates:
     security_group = ec2.SecurityGroup(group)
     try:
@@ -143,9 +143,9 @@ for group in delete_candidates:
     except Exception as e:
         print(e)
         print("{0} requires manual remediation.".format(security_group.group_name))
-'''
 
-'''
+
+
 #Sends email from systems to systems with the goods
 client = boto3.client('ses', region_name='us-east-1') #Choose which region you want to use SES
 
@@ -168,4 +168,4 @@ Message={
 
 }
 )
-'''
+
