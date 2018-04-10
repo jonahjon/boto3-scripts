@@ -150,9 +150,9 @@ for group in delete_candidates:
 client = boto3.client('ses', region_name='us-east-1') #Choose which region you want to use SES
 
 response = client.send_email(
-Source='systems@vetsfirstchoice.com',
+Source='blah@example.com',
 Destination={
-    'ToAddresses':  ['jonah.jones@vetsfirstchoice.com'
+    'ToAddresses':  ['blah@example.com'
     ]
 },
 Message={
