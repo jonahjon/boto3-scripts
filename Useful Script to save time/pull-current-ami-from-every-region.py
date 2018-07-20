@@ -1,4 +1,5 @@
-#
+# This writes a specific format we use in our CF templates, restructure if you wish
+
 # Given the ID of an Amazon public AMI in one region, figure out what the
 # equivalent AMI IDs are for that same AMI in all other regions known.
 # If that AMI isn't defined in a region, it prints the region's name, but
@@ -8,10 +9,6 @@
 from __future__ import print_function
 import boto3
 import datetime
-
-# Get a starting point by finding a value in the table on this page or similar page.
-# https://aws.amazon.com/amazon-linux-ami/
-
 
 
 # This is "amzn-ami-hvm-2017.09.01

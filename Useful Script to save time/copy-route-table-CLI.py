@@ -5,6 +5,7 @@ AWS_TARGET_REGION = 'us-east-1'
 SOURCE_ROUTE_TABLE_ID = 'rt-xxxxxxx'
 ROUTE_STATE_CREATED = 'CreateRoute'
 
+# This Script copys your route table, and turns it into an AWS CLI command for another regoion!
 
 def exit_error(message):
 	sys.stderr.write('Error: {0}\n'.format(message))

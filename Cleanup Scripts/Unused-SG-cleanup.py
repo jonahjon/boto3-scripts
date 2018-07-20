@@ -1,19 +1,9 @@
+
 #!/usr/bin/env python3
 import boto3
-import logging
 from prettytable import PrettyTable
 from prettytable import PLAIN_COLUMNS
 
-
-#in case we want logging
-'''
-#configure logging
-logging.basicConfig(
-    #filename='test.log',
-    level=logging.INFO,
-    format='%(asctime)s:::%(levelname)s:::%(message)s'   
-)
-'''
 
 #creates pretty table with heders of Group, and Name, and using the Plain Columns for a clear look with no |'s
 report = PrettyTable(['Group', 'Name'])
@@ -29,7 +19,7 @@ client = boto3.client('ec2')
 ec2 = boto3.resource('ec2')
 all_groups = []
 
-
+whitelist = ['sg-xxxxxxx']
 security_groups_in_use = []
 # Get ALL security groups names, and creating group of all SG ID's
 security_groups_dict = client.describe_security_groups()
@@ -114,13 +104,19 @@ for key, value in d.items():
             del d[key]
         except KeyError:
             pass
+    elif key in whitelist:
+        try:
+            del d[key]
+        except KeyError:
+            pass
         
 
 #sort alphabetically by Value, and create the pretty table with key/value
 for k, v in sorted(d.items(), key=lambda x: x[1]):
     report.add_row([k, v])
-
+	
 report.align['Name'] = 'l'
+
 #get string from prettytable
 email_body = report.get_string()
 
@@ -132,10 +128,9 @@ email_stats = ((('\n' * 5) + "Total number of Security Groups evaluated: {0:d}".
 
 #create one string for SES with spacing because it's picky
 emailer = (email_stats + ('\n' * 3) + email_body)
-print (emailer)
 
 #Here is the Delete Function which will be run in the future
-
+'''
 for group in delete_candidates:
     security_group = ec2.SecurityGroup(group)
     try:
@@ -143,16 +138,18 @@ for group in delete_candidates:
     except Exception as e:
         print(e)
         print("{0} requires manual remediation.".format(security_group.group_name))
-
+'''
 
 
 #Sends email from systems to systems with the goods
 client = boto3.client('ses', region_name='us-east-1') #Choose which region you want to use SES
 
+# Change the 2 emails before you run it
+
 response = client.send_email(
-Source='blah@example.com',
+Source='blah@blah.com',
 Destination={
-    'ToAddresses':  ['blah@example.com'
+    'ToAddresses':  ['blah@blah.com'
     ]
 },
 Message={
@@ -168,4 +165,3 @@ Message={
 
 }
 )
-
