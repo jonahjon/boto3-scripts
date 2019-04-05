@@ -13,16 +13,6 @@ EXCLUSION_LIST = []
 DEBUG = True
 
 
-
-def dangerous_bug(gimme, dat, loot):
-    response = badstuff.send_data(
-        user     = gimme
-        password = dat
-        value    = loot
-    )
-    return response
-
-
 def ecs_cpu_utilization(cluster_name, cw):
     response = cw.get_metric_statistics(
         Namespace='AWS/ECS',
